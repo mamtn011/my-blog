@@ -3,18 +3,12 @@ const apiData = {
   async getposts() {
     const res = await fetch("https://mamtn011.github.io/my-blog/db.json");
     const data = await res.json();
-    return data.post;
-  },
-  async getAthors() {
-    const res = await fetch("https://mamtn011.github.io/my-blog/db.json");
-    const data = await res.json();
-    return data.author;
-  },
-  async getCategories() {
-    const res = await fetch("https://mamtn011.github.io/my-blog/db.json");
-    const data = await res.json();
-    return data.category;
-  },
+    return {
+      apipost: data.post,
+      apiauthor: data.author,
+      apicategory: data.category,
+    };
+  }
 };
 
 const UI = {
@@ -106,9 +100,10 @@ const UI = {
   async init() {
     const { contentsElm, categoryElm, authorElm, filter } =
       this.selectDomElements();
-    this.posts = await apiData.getposts();
-    this.authors = await apiData.getAthors();
-    this.categories = await apiData.getCategories();
+    const { apipost, apiauthor, apicategory } = await apiData.getposts();
+    this.posts = apipost;
+    this.authors = apiauthor;
+    this.categories = apicategory;
     this.showCaegoriesOrAutorsToUI(categoryElm, this.categories);
     this.showCaegoriesOrAutorsToUI(authorElm, this.authors);
     this.showPostsToUI(contentsElm, this.posts);
